@@ -2,7 +2,7 @@
 
 DANGEROUS_PATTERNS = [
     "rm -rf /", "sudo ", "chmod 777 ", "mkfs.", "dd if=", "> /dev/",
-    "DROP TABLE", "DELETE FROM", "TRUNCATE ",
+    "drop table", "delete from", "truncate ",
 ]
 
 SAFE_COMMANDS = [

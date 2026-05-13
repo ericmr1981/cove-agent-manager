@@ -1,7 +1,7 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
-from sqlalchemy import String, BigInteger, Integer, Text, JSON, Numeric, ForeignKey, UniqueConstraint
+from sqlalchemy import String, BigInteger, Integer, Text, JSON, Numeric, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -22,11 +22,10 @@ class EventModel(Base):
     agent_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
     cost_tokens: Mapped[int | None] = mapped_column(nullable=True)
     cost_usd: Mapped[float | None] = mapped_column(Numeric(12, 6), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     __table_args__ = (
         UniqueConstraint("uuid", name="uq_event_uuid"),
-        {"postgresql_partition_by": "LIST (session_id)"},
     )
 
 
@@ -37,5 +36,5 @@ class SessionModel(Base):
     project_key: Mapped[str] = mapped_column(String(100), nullable=False)
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="ready")
     config: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))

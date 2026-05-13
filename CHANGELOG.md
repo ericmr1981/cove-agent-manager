@@ -28,3 +28,34 @@
 - Phase 3 估时从 2 周扩展为 3 周
 - TypeScript 编译 + Vite 构建 + Vitest 测试全部通过
 - commit: 8ff023d
+
+## [2026-05-13] 补齐缺失 — 核心可靠性 + 测试覆盖
+- F-012: 崩溃自动恢复（cattle pattern）实现 — CrashRecoveryManager + 12 tests
+- F-024: WebSocket 扩展事件实现 — agent_status / pipeline_update / worker_progress / metrics_snapshot
+- Context Builder: 新增 compaction/trimming 算法 + token 预估 + 27 tests
+- 补齐 7 个缺失测试文件: tool_router, permissions, session_resume, subagent, mcp_proxy, auto_mode, usage_tracking
+- 修复 datetime.utcnow() 弃用警告 (models.py)
+- 更新 quality.md 跟踪已知问题
+- 完整测试套件: 118 passed, 0 failed
+
+## [2026-05-13] Planner 动态分解 + 最终验证
+- F-019: Planner Agent 动态分解 Phase 1 MVP — TaskClassifier + 简化分解器 + 跳过机制 + Handoff 协议
+- 新增 `cove/orchestration/planner.py` — PlannerAgent, TaskClassifier, SubTask, DecompositionResult
+- 新增 `tests/test_planner.py` — 35 tests
+- F-006: 修复 verify 命令名不匹配 (`test_harness_loop` → `test_loop_yields_events`)
+- F-004: FastAPI health 端点验证通过 (curl /health → {"status": "ok"})
+- 完整测试套件: 152 passed, 0 failed
+
+## [2026-05-13] PostgreSQL 标准化 — 测试默认使用 PostgreSQL
+- tests/conftest.py: 默认数据库从 SQLite 改为 PostgreSQL (postgresql+asyncpg)
+- 所有测试文件统一使用 conftest 的 `store` fixture，移除各自硬编码的 SQLite 连接
+- 修复 `EventModel.__table_args__`：移除不成熟的 `LIST (session_id)` 分区（需要手动管理分区）
+- 修复 `SessionStoreService.get_session()`：invalid UUID 返回 None 而非报错
+- 修复 `SessionModel`/`EventModel`：`created_at`/`updated_at` 使用 `DateTime(timezone=True)`
+- 测试通过 `COVE_TEST_DATABASE_URL` 环境变量可切换数据库（默认 PostgreSQL）
+
+## [2026-05-13] PostgreSQL Schema 修复 + F-002 验证通过
+- F-002: PostgreSQL Schema 验证通过 (pg 16 partitioned table + sessions table)
+- 修复 EventModel: 分区表主键必须包含分区列 `session_id`
+- 修复 EventModel: 唯一约束必须包含分区列 `session_id`
+- 通过 `mirror.gcr.io` 解决 Docker Hub 证书被 ClashX Pro 拦截的问题

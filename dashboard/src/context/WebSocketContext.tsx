@@ -8,6 +8,7 @@ const WS_BASE = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${wi
 
 interface WebSocketContextValue {
   connected: boolean
+  error: string | null
   connectSession: (sessionId: string) => void
   sendMessage: (content: string) => void
   sendPermissionResponse: (requestId: string, decision: 'allow' | 'deny' | 'always_allow') => void
@@ -52,6 +53,14 @@ function eventToMessage(event: WsServerEvent, dispatch: Dispatch<SessionAction>)
     })
   } else if (event.type === 'session_status') {
     dispatch({ type: 'SET_STATUS', status: event.status as SessionState['status'] })
+  } else if (event.type === 'error') {
+    const msg: ChatMessage = {
+      uuid: crypto.randomUUID(),
+      kind: 'tool_error',
+      timestamp: new Date().toISOString(),
+      data: { content: `⚠️ 后端错误: ${event.message || JSON.stringify(event)}` },
+    }
+    dispatch({ type: 'ADD_MESSAGE', message: msg })
   }
 }
 
@@ -63,7 +72,7 @@ export const WebSocketProvider: FC<{ children: ReactNode }> = ({ children }) => 
     eventToMessage(event, dispatch)
   }, [dispatch])
 
-  const { connected, send } = useWebSocket({ url: wsUrl, onEvent })
+  const { connected, error, send } = useWebSocket({ url: wsUrl, onEvent })
 
   const connectSession = useCallback((sessionId: string) => {
     dispatch({ type: 'SET_SESSION_ID', id: sessionId })
@@ -84,7 +93,7 @@ export const WebSocketProvider: FC<{ children: ReactNode }> = ({ children }) => 
   }, [send])
 
   return (
-    <WebSocketContext.Provider value={{ connected, connectSession, sendMessage, sendPermissionResponse, sendInterrupt }}>
+    <WebSocketContext.Provider value={{ connected, error, connectSession, sendMessage, sendPermissionResponse, sendInterrupt }}>
       {children}
     </WebSocketContext.Provider>
   )

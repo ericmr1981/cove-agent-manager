@@ -23,25 +23,33 @@ const TAB_LABELS: Record<TabId, string> = {
   settings: '⚙️ 设置',
 }
 
-const App: FC = () => {
+const AppContent: FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('chat')
 
   const TabComponent = TAB_COMPONENTS[activeTab]
 
   return (
+    <>
+      <div className="flex flex-col h-screen bg-cove-bg">
+        <NavBar />
+        <TabBar
+          tabs={TAB_LABELS}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+        <main className="flex-1 overflow-hidden">
+          <TabComponent />
+        </main>
+      </div>
+    </>
+  )
+}
+
+const App: FC = () => {
+  return (
     <SessionProvider>
       <WebSocketProvider>
-        <div className="flex flex-col h-screen bg-cove-bg">
-          <NavBar />
-          <TabBar
-            tabs={TAB_LABELS}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
-          <main className="flex-1 overflow-hidden">
-            <TabComponent />
-          </main>
-        </div>
+        <AppContent />
       </WebSocketProvider>
     </SessionProvider>
   )

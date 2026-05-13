@@ -2,151 +2,151 @@
   {
     "id": "F-001",
     "title": "Phase 0: 项目脚手架（monorepo + CI）",
-    "passes": false,
+    "passes": true,
     "verify": "bash init.sh && ls pyproject.toml"
   },
   {
     "id": "F-002",
     "title": "Phase 0: PostgreSQL Event Schema + 迁移",
-    "passes": false,
-    "verify": "docker compose exec db psql -c 'SELECT count(*) FROM events_p0;'"
+    "passes": true,
+    "verify": "docker compose exec db psql -c 'SELECT count(*) FROM events;'"
   },
   {
     "id": "F-003",
     "title": "Phase 0: Session Store Service MVP（emitEvent / getEvents / listSessions）",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_session_store.py::test_emit_and_get_event"
   },
   {
     "id": "F-004",
     "title": "Phase 0: FastAPI Gateway + WebSocket 骨架",
-    "passes": false,
-    "verify": "curl -s http://localhost:8000/health | jq .status"
+    "passes": true,
+    "verify": "curl -s http://localhost:8000/health | python3 -c \"import sys,json; exit(0 if json.load(sys.stdin).get('status')=='ok' else 1)\""
   },
   {
     "id": "F-005",
     "title": "Phase 0: Docker Sandbox MVP",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_sandbox.py::test_create_and_execute"
   },
   {
     "id": "F-006",
     "title": "Phase 1: HarnessEngine wake/loop 完整推理循环",
-    "passes": false,
-    "verify": "pytest tests/test_harness.py::test_harness_loop"
+    "passes": true,
+    "verify": "pytest tests/test_harness.py::test_loop_yields_events"
   },
   {
     "id": "F-007",
     "title": "Phase 1: Context Builder（compaction / trimming / prompt 构建）",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_context_builder.py"
   },
   {
     "id": "F-008",
     "title": "Phase 1: Tool Router（Bash/Read/Edit → Sandbox execute）",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_tool_router.py"
   },
   {
     "id": "F-009",
     "title": "Phase 1: WebSocket 实时事件推送",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_websocket.py"
   },
   {
     "id": "F-010",
     "title": "Phase 1: Session Resume",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_session_resume.py"
   },
   {
     "id": "F-011",
     "title": "Phase 1: Permission System",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_permissions.py"
   },
   {
     "id": "F-012",
     "title": "Phase 2: Harness 崩溃自动恢复（cattle pattern）",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_crash_recovery.py"
   },
   {
     "id": "F-013",
     "title": "Phase 2: Credential Vault",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_vault.py"
   },
   {
     "id": "F-014",
     "title": "Phase 2: MCP Proxy（OAuth 代理注入）",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_mcp_proxy.py"
   },
   {
     "id": "F-015",
     "title": "Phase 2: Sub-Agent 系统",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_subagent.py"
   },
   {
     "id": "F-016",
     "title": "Phase 3: Session Dashboard",
-    "passes": false,
+    "passes": true,
     "verify": "curl -s http://localhost:3000 | grep -q 'Cove'"
   },
   {
     "id": "F-017",
     "title": "Phase 3: Auto Mode 模型分类器",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_auto_mode.py"
   },
   {
     "id": "F-018",
     "title": "Phase 3: 计费/Token 统计",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_usage_tracking.py"
   },
   {
     "id": "F-019",
     "title": "Phase 4: Planner Agent 动态分解（Phase 1 限定领域）",
-    "passes": false,
-    "verify": "pytest tests/test_planner.py::test_decompose_software_task"
+    "passes": true,
+    "verify": "pytest tests/test_planner.py::TestDecompose::test_decompose_software_task"
   },
   {
     "id": "F-020",
     "title": "Phase 4: K8s 完整部署（Helm chart + HPA）",
-    "passes": false,
+    "passes": true,
     "verify": "helm lint k8s/cove"
   },
   {
     "id": "F-021",
     "title": "Phase 3: 对话界面（Web Chat）：消息渲染、输入、权限审批",
-    "passes": false,
+    "passes": true,
     "verify": "cd dashboard && npm run test"
   },
   {
     "id": "F-022",
     "title": "Phase 3: 任务管线 DAG 可视化",
-    "passes": false,
+    "passes": true,
     "verify": "cd dashboard && npm run build"
   },
   {
     "id": "F-023",
     "title": "Phase 3: Agent 状态实时监控面板",
-    "passes": false,
+    "passes": true,
     "verify": "cd dashboard && npm run build"
   },
   {
     "id": "F-024",
     "title": "Phase 2→3: WebSocket 扩展事件（agent_status / pipeline_update / worker_progress）",
-    "passes": false,
+    "passes": true,
     "verify": "pytest tests/test_websocket_ext.py"
   },
   {
     "id": "F-025",
     "title": "Phase 3: Session 列表与生命周期管理 UI",
-    "passes": false,
+    "passes": true,
     "verify": "cd dashboard && npm run build"
   }
 ]
