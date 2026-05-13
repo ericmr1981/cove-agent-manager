@@ -118,5 +118,35 @@
     "title": "Phase 4: K8s 完整部署（Helm chart + HPA）",
     "passes": false,
     "verify": "helm lint k8s/cove"
+  },
+  {
+    "id": "F-021",
+    "title": "Phase 3: 对话界面（Web Chat）：消息渲染、输入、权限审批",
+    "passes": false,
+    "verify": "cd dashboard && npm run test"
+  },
+  {
+    "id": "F-022",
+    "title": "Phase 3: 任务管线 DAG 可视化",
+    "passes": false,
+    "verify": "cd dashboard && npm run build"
+  },
+  {
+    "id": "F-023",
+    "title": "Phase 3: Agent 状态实时监控面板",
+    "passes": false,
+    "verify": "cd dashboard && npm run build"
+  },
+  {
+    "id": "F-024",
+    "title": "Phase 2→3: WebSocket 扩展事件（agent_status / pipeline_update / worker_progress）",
+    "passes": false,
+    "verify": "pytest tests/test_websocket_ext.py"
+  },
+  {
+    "id": "F-025",
+    "title": "Phase 3: Session 列表与生命周期管理 UI",
+    "passes": false,
+    "verify": "cd dashboard && npm run build"
   }
 ]

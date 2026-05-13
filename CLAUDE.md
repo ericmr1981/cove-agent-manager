@@ -13,7 +13,7 @@
 - [ ] Phase 0: 基础设施（2 周）— PostgreSQL Schema + Session Store MVP + FastAPI 骨架 + Docker Sandbox MVP
 - [ ] Phase 1: 核心链路（3 周）— HarnessEngine wake/loop + Context Builder + Tool Router + Session Resume
 - [ ] Phase 2: 可靠性（2 周）— 崩溃自动恢复 + Credential Vault + MCP Proxy + Sub-Agent
-- [ ] Phase 3: 平台化（2 周）— Dashboard + 基础产品化
+- [ ] Phase 3: 平台化（3 周）— Cove Console（对话/管线/Agent 监控）+ Auto Mode + 计费 + 健康检查
 - [ ] Phase 4: 全领域扩展（持续）— K8s 部署 + 多模型 + Planner 动态分解
 
 ## Non-goals
