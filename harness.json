@@ -1,0 +1,6 @@
+{
+  "initCommand": "bash init.sh",
+  "testCommand": "",
+  "e2eCommand": "",
+  "acceptanceSummary": "可私有化部署的 Agent Runtime 环境，支持 Session 持久化、Harness 无状态推理、Planner 动态分解、多 Worker 并行编排"
+}
