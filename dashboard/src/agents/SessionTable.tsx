@@ -21,7 +21,7 @@ const STATUS_DOTS: Record<string, string> = {
 
 const SessionTable: FC<SessionTableProps> = ({ sessions }) => {
   return (
-    <div className="bg-cove-bg border border-cove-border rounded-lg overflow-hidden mt-4">
+    <div className="bg-cove-bg border border-cove-border rounded-lg overflow-x-auto mt-4">
       <div className="px-3 py-2 border-b border-cove-border text-xs text-cove-muted font-medium">
         所有 Session
       </div>
