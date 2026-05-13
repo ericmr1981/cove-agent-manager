@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react'
+import { useState, useMemo, type FC } from 'react'
 import { useSession } from '../context/SessionContext'
 import PipelineDAG from '../pipeline/PipelineDAG'
 import EventLog from '../pipeline/EventLog'
@@ -31,11 +31,11 @@ function buildPipeline(
         model: planner.model,
       },
     })
-    logs.push({ time: '--:--:--', direction: 'in', message: `${planner.id}: 任务分解中` })
+    logs.push({ id: `${planner.id}-decompose`, time: '--:--:--', direction: 'in', message: `${planner.id}: 任务分解中` })
 
     workers.forEach((w) => {
       edges.push({ id: `${planner.id}->${w.id}`, source: planner.id, target: w.id })
-      logs.push({ time: '--:--:--', direction: 'out', message: `${w.id} 已创建 (${w.capability || 'N/A'})` })
+      logs.push({ id: `${w.id}-created`, time: '--:--:--', direction: 'out', message: `${w.id} 已创建 (${w.capability || 'N/A'})` })
     })
   }
 
@@ -57,9 +57,9 @@ function buildPipeline(
     })
 
     if (w.status === 'failed') {
-      logs.push({ time: '--:--:--', direction: 'error', message: `${w.id} 失败: ${w.error || ''}` })
+      logs.push({ id: `${w.id}-error`, time: '--:--:--', direction: 'error', message: `${w.id} 失败: ${w.error || ''}` })
     } else if (w.status === 'retrying') {
-      logs.push({ time: '--:--:--', direction: 'retry', message: `${w.id} 正在重试` })
+      logs.push({ id: `${w.id}-retry`, time: '--:--:--', direction: 'retry', message: `${w.id} 正在重试` })
     }
   })
 
@@ -86,7 +86,10 @@ function buildPipeline(
 const PipelineTab: FC = () => {
   const { state } = useSession()
   const [selectedNode, setSelectedNode] = useState<string | null>(null)
-  const { nodes, edges, logs } = buildPipeline(state.agentList)
+  const { nodes, edges, logs } = useMemo(
+    () => buildPipeline(state.agentList),
+    [state.agentList]
+  )
 
   return (
     <div className="p-4 h-full overflow-y-auto">

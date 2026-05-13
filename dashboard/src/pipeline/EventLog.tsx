@@ -1,6 +1,7 @@
 import { useEffect, useRef, type FC } from 'react'
 
 export interface LogEntry {
+  id: string
   time: string
   direction: 'in' | 'out' | 'error' | 'retry'
   message: string
@@ -36,12 +37,12 @@ const EventLog: FC<EventLogProps> = ({ entries }) => {
       <div className="px-3 py-2 border-b border-cove-border text-xs text-cove-muted font-medium">
         事件日志
       </div>
-      <div className="max-h-40 overflow-y-auto p-2 font-mono text-xs">
+      <div className="max-h-40 overflow-y-auto p-2 font-mono text-xs" role="log" aria-live="polite" tabIndex={0}>
         {entries.length === 0 && (
           <div className="text-cove-muted text-center py-4">暂无事件</div>
         )}
-        {entries.map((entry, i) => (
-          <div key={i} className="flex gap-2 py-0.5">
+        {entries.map((entry) => (
+          <div key={entry.id} className="flex gap-2 py-0.5">
             <span className="text-cove-muted flex-shrink-0 w-14">{entry.time}</span>
             <span className={`flex-shrink-0 ${DIR_COLORS[entry.direction]}`}>{DIR_ICONS[entry.direction]}</span>
             <span className={entry.direction === 'error' ? 'text-cove-danger' : 'text-cove-text'}>

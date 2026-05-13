@@ -37,7 +37,7 @@ const PipelineNode: FC<NodeProps<PipelineNodeData>> = ({ data }) => {
     >
       <Handle type="target" position={Position.Top} className="!bg-cove-border" />
       <div className="text-center">
-        <div className="text-lg mb-1">{NODE_EMOJIS[data.type] || '?'}</div>
+        <div className="text-lg mb-1" aria-hidden="true">{NODE_EMOJIS[data.type] || '?'}</div>
         <div className="text-sm font-medium">{data.label}</div>
         <div className="text-xs text-cove-muted mt-1">{data.capability || ''}</div>
         {data.model && <div className="text-xs text-cove-muted">{data.model}</div>}
