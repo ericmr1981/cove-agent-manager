@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  repository: cove/agent-manager
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+postgresql:
+  enabled: true
+  auth:
+    database: cove
+    username: cove
+    password: cove-prod
+
+redis:
+  enabled: true
+  auth:
+    enabled: false
+
+resources:
+  limits:
+    cpu: "2"
+    memory: "2Gi"
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
