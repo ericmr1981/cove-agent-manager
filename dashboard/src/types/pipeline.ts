@@ -8,6 +8,7 @@ export interface PipelineNodeData {
   model?: string;
   capability?: string;
   error?: string;
+  [key: string]: unknown;
 }
 
 export type PipelineNode = Node<PipelineNodeData>;

@@ -1,5 +1,5 @@
 import { memo, type FC } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position } from '@xyflow/react'
 import type { PipelineNodeData } from '../types/pipeline'
 
 const STATUS_COLORS: Record<string, string> = {
@@ -26,7 +26,7 @@ const NODE_EMOJIS: Record<string, string> = {
   reviewer: '👁️',
 }
 
-const PipelineNode: FC<NodeProps<PipelineNodeData>> = ({ data }) => {
+const PipelineNode: FC<{ data: PipelineNodeData }> = ({ data }) => {
   const color = STATUS_COLORS[data.status] || STATUS_COLORS.pending
   const borderStyle = data.status === 'pending' ? 'dashed' : 'solid'
 
