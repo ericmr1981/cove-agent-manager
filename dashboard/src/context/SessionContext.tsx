@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, type Dispatch, type FC, type ReactNode } from 'react'
 import type { SessionState, ChatMessage, AgentInfo } from '../types/session'
 
-type SessionAction =
+export type SessionAction =
   | { type: 'SET_SESSION_ID'; id: string }
   | { type: 'SET_STATUS'; status: SessionState['status'] }
   | { type: 'ADD_MESSAGE'; message: ChatMessage }
@@ -10,7 +10,7 @@ type SessionAction =
   | { type: 'SET_TOKEN_USAGE'; used: number; limit: number }
   | { type: 'SET_COST'; cost: number }
   | { type: 'SET_UPTIME'; uptime: number }
-  | { type: 'SET_METRICS'; active: number; completed: number; cost: number; uptime: number; tokens: number; tokenLimit: number }
+  | { type: 'SET_METRICS'; cost: number; uptime: number; tokens: number; tokenLimit: number }
   | { type: 'RESET' }
 
 const initialState: SessionState = {

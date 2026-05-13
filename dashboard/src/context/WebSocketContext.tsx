@@ -1,8 +1,8 @@
-import { createContext, useContext, useCallback, useState, type FC, type ReactNode } from 'react'
+import { createContext, useContext, useCallback, useState, type Dispatch, type FC, type ReactNode } from 'react'
 import { useWebSocket } from '../hooks/useWebSocket'
-import { useSession } from './SessionContext'
+import { useSession, type SessionAction } from './SessionContext'
 import type { WsServerEvent, WsClientMessage } from '../types/events'
-import type { ChatMessage, AgentInfo } from '../types/session'
+import type { ChatMessage, AgentInfo, SessionState } from '../types/session'
 
 const WS_BASE = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/api/v1/sessions`
 
@@ -16,7 +16,7 @@ interface WebSocketContextValue {
 
 const WebSocketContext = createContext<WebSocketContextValue | null>(null)
 
-function eventToMessage(event: WsServerEvent, dispatch: (action: unknown) => void) {
+function eventToMessage(event: WsServerEvent, dispatch: Dispatch<SessionAction>) {
   if (event.type === 'event' && 'kind' in event.event) {
     const msg: ChatMessage = {
       uuid: event.event.uuid,
@@ -40,8 +40,6 @@ function eventToMessage(event: WsServerEvent, dispatch: (action: unknown) => voi
   } else if (event.type === 'metrics_snapshot') {
     dispatch({
       type: 'SET_METRICS',
-      active: event.active_agents,
-      completed: event.total_completed,
       cost: event.cost_usd,
       uptime: event.uptime,
       tokens: event.tokens_used,
