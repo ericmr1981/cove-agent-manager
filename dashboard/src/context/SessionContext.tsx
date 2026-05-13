@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, type Dispatch, type FC, type ReactNode } from 'react'
-import type { SessionState, ChatMessage, AgentInfo } from '../types/session'
+import type { SessionState, ChatMessage, AgentInfo, PendingPermission } from '../types/session'
 
 export type SessionAction =
   | { type: 'SET_SESSION_ID'; id: string }
@@ -11,6 +11,8 @@ export type SessionAction =
   | { type: 'SET_COST'; cost: number }
   | { type: 'SET_UPTIME'; uptime: number }
   | { type: 'SET_METRICS'; cost: number; uptime: number; tokens: number; tokenLimit: number }
+  | { type: 'SET_PERMISSION_REQUEST'; permission: PendingPermission }
+  | { type: 'CLEAR_PERMISSION_REQUEST' }
   | { type: 'RESET' }
 
 const initialState: SessionState = {
@@ -27,6 +29,7 @@ const initialState: SessionState = {
   tools: [],
   agentList: [],
   messages: [],
+  pendingPermission: null,
 }
 
 function sessionReducer(state: SessionState, action: SessionAction): SessionState {
@@ -56,6 +59,10 @@ function sessionReducer(state: SessionState, action: SessionAction): SessionStat
       return { ...state, uptime: action.uptime }
     case 'SET_METRICS':
       return { ...state, tokenUsage: action.tokens, tokenLimit: action.tokenLimit, costUsd: action.cost, uptime: action.uptime }
+    case 'SET_PERMISSION_REQUEST':
+      return { ...state, pendingPermission: action.permission }
+    case 'CLEAR_PERMISSION_REQUEST':
+      return { ...state, pendingPermission: null }
     case 'RESET':
       return initialState
     default:

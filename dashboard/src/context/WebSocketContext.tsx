@@ -45,6 +45,11 @@ function eventToMessage(event: WsServerEvent, dispatch: Dispatch<SessionAction>)
       tokens: event.tokens_used,
       tokenLimit: event.token_limit,
     })
+  } else if (event.type === 'permission_request') {
+    dispatch({
+      type: 'SET_PERMISSION_REQUEST',
+      permission: { requestId: event.request_id, tool: event.tool, command: event.command },
+    })
   } else if (event.type === 'session_status') {
     dispatch({ type: 'SET_STATUS', status: event.status as SessionState['status'] })
   }

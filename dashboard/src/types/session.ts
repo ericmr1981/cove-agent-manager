@@ -1,5 +1,11 @@
 import type { EventKind } from './events';
 
+export interface PendingPermission {
+  requestId: string;
+  tool: string;
+  command: string;
+}
+
 export interface SessionState {
   sessionId: string | null;
   status: 'idle' | 'ready' | 'running' | 'completed' | 'failed';
@@ -14,6 +20,7 @@ export interface SessionState {
   tools: string[];
   agentList: AgentInfo[];
   messages: ChatMessage[];
+  pendingPermission: PendingPermission | null;
 }
 
 export interface ChatMessage {

@@ -5,15 +5,17 @@ interface PermissionCardProps {
   requestId: string
   tool: string
   command: string
+  onResolved?: () => void
 }
 
-const PermissionCard: FC<PermissionCardProps> = ({ requestId, tool, command }) => {
+const PermissionCard: FC<PermissionCardProps> = ({ requestId, tool, command, onResolved }) => {
   const { sendPermissionResponse } = useWebSocketContext()
   const [resolved, setResolved] = useState(false)
 
   const handleDecision = (decision: 'allow' | 'deny' | 'always_allow') => {
     sendPermissionResponse(requestId, decision)
     setResolved(true)
+    onResolved?.()
   }
 
   if (resolved) {

@@ -3,9 +3,10 @@ import { useSession } from '../context/SessionContext'
 import { useWebSocketContext } from '../context/WebSocketContext'
 import MessageList from '../messages/MessageList'
 import SessionSidebar from '../components/SessionSidebar'
+import PermissionCard from '../components/PermissionCard'
 
 const ChatTab: FC = () => {
-  const { state } = useSession()
+  const { state, dispatch } = useSession()
   const { sendMessage, connected } = useWebSocketContext()
   const [input, setInput] = useState('')
 
@@ -23,10 +24,24 @@ const ChatTab: FC = () => {
     }
   }
 
+  const handlePermissionResolved = () => {
+    dispatch({ type: 'CLEAR_PERMISSION_REQUEST' })
+  }
+
   return (
     <div className="flex h-full">
       <div className="flex-1 flex flex-col">
         <MessageList messages={state.messages} />
+        {state.pendingPermission && (
+          <div className="px-4 pb-2">
+            <PermissionCard
+              requestId={state.pendingPermission.requestId}
+              tool={state.pendingPermission.tool}
+              command={state.pendingPermission.command}
+              onResolved={handlePermissionResolved}
+            />
+          </div>
+        )}
         <div className="border-t border-cove-border p-3">
           <div className="flex gap-2">
             <input
